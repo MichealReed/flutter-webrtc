@@ -15,9 +15,7 @@ class navigator {
           mediaConstraints['video'].remove('facingMode');
         }
       }
-      final jsStream = await nav.getUserMedia(
-          audio: mediaConstraints['audio'] ?? false,
-          video: mediaConstraints['video'] ?? false);
+      final jsStream = await nav.mediaDevices.getUserMedia(mediaConstraints);
       return MediaStream(jsStream);
     } catch (e) {
       throw 'Unable to getUserMedia: ${e.toString()}';
@@ -36,10 +34,9 @@ class navigator {
                 JSUtils.callMethod(mediaDevices, 'getDisplayMedia', [arg]));
         return MediaStream(jsStream);
       } else {
-        final HTML.MediaStream jsStream = await HTML.window.navigator
-            .getUserMedia(
-                video: {"mediaSource": 'screen'},
-                audio: mediaConstraints['audio'] ?? false);
+        final HTML.MediaStream jsStream = await HTML
+            .window.navigator.mediaDevices
+            .getUserMedia(mediaConstraints);
         return MediaStream(jsStream);
       }
     } catch (e) {
